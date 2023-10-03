@@ -134,6 +134,5 @@ linreg <- setRefClass(
 
 # Example usage:
 # Create a linreg object
-lin_reg_model <- linreg(formula = Petal.Length ~ Species, data = iris)
+linreg_mod <- linreg(formula = Petal.Length ~ Species, data = iris)
 
-str(lin_reg_model)
