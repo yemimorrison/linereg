@@ -8,7 +8,7 @@ Description: The package contains a function to handle linear regression models.
 License: MIT + file LICENSE
 Imports:
   methods, MASS, ggplot2, dplyr, 
-  plotly, nycflights13, caTools, 
+  plotly, nycflights13, caTools, tools,
   caret, elasticnet, mlbench, rminer
 Suggests: 
     knitr,
