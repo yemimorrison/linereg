@@ -15,11 +15,11 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-library(linereg)
-library(rminer)
-library(caTools)
-library(caret)
-library(elasticnet)
+#library(linereg)
+#library(rminer)
+#library(caTools)
+#library(caret)
+#library(elasticnet)
 ```
 
 **Description** 
@@ -69,7 +69,7 @@ In this examples we will try to create a predictive model for the BostonHousing.
 
 1. Dividing the BostonHousing data into a test and training dataset
 ```{r,include=TRUE,eval=FALSE}
-library(mlbench)
+#library(mlbench)
 data(BostonHousing)
 split= caTools::sample.split(BostonHousing$medv,SplitRatio = 7/9)
 training_set= subset(BostonHousing, split==TRUE)

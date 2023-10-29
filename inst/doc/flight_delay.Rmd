@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-library(linereg)
+#library(linereg)
 ```
 **Description** 
 
@@ -25,14 +25,14 @@ In this vignette we will try to predict the delay of each flights using our own 
 
 1. Geting weather dataset and the flights dataset from the nycflights13 package and removing the eventual variables which do not have a predictive value.
 ```{r,include=TRUE,eval=FALSE,echo=TRUE,results='hide'}
-#getting flight dataset from nycflights13 library and removing rows 
+#getting flight dataset from nycflights13 #library and removing rows 
 #in which na is present in dep_delay and arr_delay columns
 flights<-nycflights13::flights
 flights <- flights[!is.na(flights$dep_delay), ]
 flights <- flights[!is.na(flights$arr_delay), ]
 
 #getting the arr_delay which is greater than 0
-library(dplyr)
+#library(dplyr)
 flights<-dplyr::filter(flights ,arr_delay>0)
 
 #creating a new dataframe carrier_group grouping by origin, tailnum, day
