@@ -1,2 +1,5 @@
 exportPattern("^[[:alpha:]]+")
-
+importFrom("methods", "new")
+importFrom("MASS", "lm.ridge")
+importFrom("plotly", "ggplotly")
+importFrom("dplyr", "%>%")

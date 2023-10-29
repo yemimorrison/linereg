@@ -1,0 +1,121 @@
+---
+title: "linreg"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{linreg}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+#library(linereg)
+```
+
+**Description**  
+
+
+The linreg package uses ordinary least squares method to calculate best fitted values, estimators(coefficients), residuals,variance of the regression coefficients residual variance, t values and P values.
+  
+  
+**Installation** 
+
+
+The Package can be downloaded from.
+    
+    
+    devtools::install_github("yemimorrison/linereg")
+    
+    
+**Vignette**  
+
+
+After installation run the code below to find vignettes.
+    
+    
+    browseVignettes('linereg')
+    
+    
+**Attributes defined in the Class **
+
+    Linreg Class contains following attributes:
+        *formula (formula). Dependent and independent columns in data frame
+        *data (data.frame). Data frame for linear models
+        *coeffs (Vector). Estimators matrix converted to vector
+        *pred_val (matrix). Estimated dependent values
+        *e (matrix). Error calculated from actual minus calculated dependent varaiable
+        *deg_f (numeric). degrees of freedom
+        *var_e (matrix). Residual variance
+        *var_coeffs (vector). variance of the regression coefficients
+        *t_value (matrix). T value
+        *df_name (character). Data Frame name
+
+
+**Methods**
+
+
+1.print()  
+
+  Prints out the coefficients.
+
+
+2.plot()  
+
+  Plots the following **Residuals vs Fitted values** and **Standardized error vs Fitted values** plots using ggplot2
+
+
+3.resid()  
+
+  This method returns the vector of residuals(errors).
+
+
+4.coef()  
+
+  Returns the coefficients as a named vector.
+
+
+5.summary()  
+
+  Summary returns a matrix of Estimate, Standard Error, t value, P value, Residual standard error and degrees of freedom.
+
+
+
+
+**Examples**   
+
+    
+    1) linreg_obj<-linreg$new(formula=Petal.Length ~ Species,data=iris)
+    linreg_obj$print()
+  
+    call:
+    linreg(formula = Petal.Length ~ Species, data = iris)
+
+    Coffiecients:
+      (Intercept)  Speciesversicolor   Speciesvirginica  
+            1.462              2.798              4.090 
+            
+    
+    
+    2) linreg_obj<-linreg$new(formula=Petal.Length ~ Species,data=iris)
+    linreg_obj$summary()
+    
+    call:
+    linreg(formula = Petal.Length ~ Species, data = iris)
+
+    Coffiecients:
+                  Estimate Std.Error t value Pr(>|t|)                
+    (Intercept)       1.462    0.06086   24.02   9.3030515228435e-53  ***
+    Speciesversicolor 2.798    0.08607   32.51   5.25458742021361e-69 ***
+    Speciesvirginica  4.09     0.08607   47.52   4.106138619051e-91   ***
+
+    Residual standard error: 0.4318 on 147 degrees of freedom
+    
+
+
+

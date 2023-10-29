@@ -4,8 +4,12 @@ Title: Linear Algorithm
 Version: 0.1.0
 Author: c(person("Olayemi", "Morrison", "olamo208@student.liu.se", role = c("aut","cre"), comment = c(LiUID = "olamo208")), person("Daisuke", "Yamashita", "ronss490@student.liu.se", , role = c("aut"), comment = c(LiUID1 = "ronss490")))
 Maintainer: Olayemi Morrison <olamo208@student.liu.se>
-Description: The package contains a function to handle linear regression models
+Description: The package contains a function to handle linear regression models. 
 License: MIT + file LICENSE
+Imports:
+  methods, MASS, ggplot2, dplyr, 
+  plotly, nycflights13, caTools, 
+  caret, elasticnet, mlbench, rminer
 Suggests: 
     knitr,
     rmarkdown,

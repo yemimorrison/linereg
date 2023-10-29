@@ -1,4 +1,4 @@
-context("linreg")
+context_start_file("linreg")
 
 data("iris")
 
