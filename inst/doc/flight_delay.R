@@ -1,0 +1,141 @@
+## ----include = FALSE-------------------------------------------------------------------------------------------------------------------------------------------
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+## ----setup-----------------------------------------------------------------------------------------------------------------------------------------------------
+library(linereg)
+
+## ----include=TRUE,eval=FALSE,echo=TRUE,results='hide'----------------------------------------------------------------------------------------------------------
+#  #getting flight dataset from nycflights13 library and removing rows
+#  #in which na is present in dep_delay and arr_delay columns
+#  flights<-nycflights13::flights
+#  flights <- flights[!is.na(flights$dep_delay), ]
+#  flights <- flights[!is.na(flights$arr_delay), ]
+#  
+#  #getting the arr_delay which is greater than 0
+#  library(dplyr)
+#  flights<-dplyr::filter(flights ,arr_delay>0)
+#  
+#  #creating a new dataframe carrier_group grouping by origin, tailnum, day
+#  #hour and summarising by the arr_delay,dep_delay,distance and air_time columns
+#  carrier_group <- flights %>%
+#    dplyr::group_by( origin,tailnum, month, day, hour) %>%
+#    summarise(arr_delay = arr_delay,
+#              dep_delay=dep_delay,
+#              distance=distance,
+#              air_time=air_time)
+#  
+#  #removing rows based on na values in the below columns
+#  carrier_group<-carrier_group[!is.na(carrier_group$dep_delay), ]
+#  carrier_group<-carrier_group[!is.na(carrier_group$arr_delay), ]
+#  carrier_group<-carrier_group[!is.na(carrier_group$tailnum), ]
+#  carrier_group<-carrier_group[!is.na(carrier_group$month), ]
+#  carrier_group<-carrier_group[!is.na(carrier_group$day), ]
+#  carrier_group<-carrier_group[!is.na(carrier_group$hour), ]
+#  carrier_group<-carrier_group[!is.na(carrier_group$distance), ]
+#  carrier_group<-carrier_group[!is.na(carrier_group$air_time), ]
+
+## ----include=TRUE,eval=FALSE,echo=TRUE,results='hide'----------------------------------------------------------------------------------------------------------
+#  #creating new dataframe weat by taking the required columns from weather dataset
+#  
+#  weat <- nycflights13::weather %>%
+#    dplyr::group_by( origin,month, day, hour) %>%
+#    summarise(temp = mean(temp),
+#              dewp=dewp,
+#              humid=humid,
+#              wind_dir=wind_dir,
+#              speed=wind_speed,
+#              visib=visib,
+#              wind_gust=wind_gust,
+#              precip=precip)
+#  
+#  #removing rows based on na values in the below columns
+#  weat <- weat[!is.na(weat$wind_gust), ]
+#  weat<-weat[!is.na(weat$month), ]
+#  weat<-weat[!is.na(weat$day), ]
+#  weat<-weat[!is.na(weat$hour), ]
+#  weat<-weat[!is.na(weat$precip), ]
+#  weat<-weat[!is.na(weat$visib), ]
+#  weat<-weat[!is.na(weat$speed), ]
+#  weat<-weat[!is.na(weat$wind_dir), ]
+#  weat<-weat[!is.na(weat$humid), ]
+#  weat<-weat[!is.na(weat$dewp), ]
+#  weat<-weat[!is.na(weat$temp), ]
+#  
+#  
+#  #left joining weat dataframe to get our final carrier_group dataframe
+#  carrier_group <- weat %>%
+#    left_join(carrier_group, weat, by = c('month'='month', 'day'='day', 'hour'='hour','origin'='origin'))
+#  
+#  #removing rows based on na values in the below columns
+#  carrier_group<-carrier_group[!is.na(carrier_group$dep_delay), ]
+#  carrier_group<-carrier_group[!is.na(carrier_group$arr_delay), ]
+#  carrier_group<-carrier_group[!is.na(carrier_group$tailnum), ]
+#  carrier_group<-carrier_group[!is.na(carrier_group$month), ]
+#  carrier_group<-carrier_group[!is.na(carrier_group$day), ]
+#  carrier_group<-carrier_group[!is.na(carrier_group$hour), ]
+#  carrier_group<-carrier_group[!is.na(carrier_group$distance), ]
+#  carrier_group<-carrier_group[!is.na(carrier_group$precip), ]
+#  carrier_group<-carrier_group[!is.na(carrier_group$visib), ]
+#  carrier_group<-carrier_group[!is.na(carrier_group$speed), ]
+#  carrier_group<-carrier_group[!is.na(carrier_group$wind_dir), ]
+#  carrier_group<-carrier_group[!is.na(carrier_group$humid), ]
+#  carrier_group<-carrier_group[!is.na(carrier_group$dewp), ]
+#  carrier_group<-carrier_group[!is.na(carrier_group$temp), ]
+#  carrier_group <- carrier_group[!is.na(carrier_group$wind_gust), ]
+#  carrier_group<-carrier_group[!is.na(carrier_group$air_time), ]
+#  
+#  
+#  #factorizing origin and tailnum categorical data
+#  carrier_group$origin = factor (carrier_group$origin,
+#                                 levels =c('EWR','JFK','LGA'),
+#                                 labels=c(1,2,3))
+#  carrier_group$tailnum<-as.factor(carrier_group$tailnum)
+#  carrier_group[,c('tailnum')]<-sapply(carrier_group[,c('tailnum')],unclass)
+#  
+
+## ----include=TRUE,eval=FALSE,echo=TRUE,results='hide'----------------------------------------------------------------------------------------------------------
+#  #splitting the data into train, test and validation datasets
+#  train_idx<-caret::createDataPartition(carrier_group$arr_delay,p=0.95,list=F)
+#  test<-carrier_group[-train_idx,]
+#  
+#  val_idx<-caret::createDataPartition(carrier_group$arr_delay[train_idx],p=0.16,list=F)
+#  valid<-carrier_group[val_idx,]
+#  train<-carrier_group[-val_idx,]
+
+## ----include=TRUE,eval=FALSE,echo=TRUE-------------------------------------------------------------------------------------------------------------------------
+#  rmse_vec<-c() # root mean squared errors
+#  r2_vec<-c() # R squared
+#  mse_vec<-c() # mean squared errors
+#  lamda<-seq(0.0001,0.1,by=0.0001)
+#  
+#  #getting lambda value by predicting on validation dataset after tarining on dataset
+#  for (i in 1:length(lamda)){
+#  
+#    model_lamda<-ridgereg(formula=arr_delay~.,data=train,lamda=i)
+#    ridge_pred_l<-model_lamda$predict(valid)
+#    rmse_ridge<-rminer::mmetric(valid$arr_delay,ridge_pred_l,"RMSE")
+#    mape_ridge<-rminer::mmetric(valid$arr_delay,ridge_pred_l,"MAPE")
+#    r2_ridge<-rminer::mmetric(valid$arr_delay,ridge_pred_l,"R2")
+#    rmse_vec<-c(rmse_vec,rmse_ridge)
+#    r2_vec<-c(r2_vec,r2_ridge)
+#    mape_vec<-c(mse_vec,mape_ridge)
+#  }
+#  idx<-which(rmse_vec==min(rmse_vec))
+#  plot(lamda,rmse_vec)
+
+## ----include=TRUE,eval=FALSE,echo=TRUE,results='hide'----------------------------------------------------------------------------------------------------------
+#  # we can see that rmse is very minimum that is around 0.0001
+#  
+#  #Predicting the values of test data by training the model
+#  model<-linereg::ridgereg(formula=arr_delay~.,data=train,lamda=0.0001)
+#  model
+#  pred<-model$predict(test)
+
+## ----include=TRUE,eval=FALSE,echo=TRUE-------------------------------------------------------------------------------------------------------------------------
+#  rmse<-rminer::mmetric(test$arr_delay,pred,"RMSE")
+#  rmse
+#  
+
