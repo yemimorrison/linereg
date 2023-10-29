@@ -26,7 +26,7 @@ In this vignette we will try to predict the delay of each flights using our own 
 **Application** 
 
 1. Geting weather dataset and the flights dataset from the nycflights13 package and removing the eventual variables which do not have a predictive value.
-```{r,include=TRUE,eval=TRUE,echo=TRUE,results='hide'}
+```{r,include=TRUE,eval=FALSE,echo=TRUE,results='hide'}
 #getting flight dataset from nycflights13 library and removing rows 
 #in which na is present in dep_delay and arr_delay columns
 df_flights<- nycflights13::flights
@@ -57,7 +57,7 @@ carrier_group<-carrier_group[!is.na(carrier_group$distance), ]
 carrier_group<-carrier_group[!is.na(carrier_group$air_time), ]
 ```
 2. Add extra weather data from the weather dataset and organize it to get the final data frame.
-```{r,include=TRUE,eval=TRUE,echo=TRUE,results='hide'}
+```{r,include=TRUE,eval=FALSE,echo=TRUE,results='hide'}
 #creating new dataframe weat by taking the required columns from weather dataset
 
 weat <-  nycflights13::weather %>%
@@ -117,7 +117,7 @@ carrier_group[,c('tailnum')]<-sapply(carrier_group[,c('tailnum')],unclass)
 
 ```
 3. Using the caret package to divide the fight dataset into three sets: test, train and validation.
-```{r,include=TRUE,eval=TRUE,echo=TRUE,results='hide'}
+```{r,include=TRUE,eval=FALSE,echo=TRUE,results='hide'}
 #splitting the data into train, test and validation datasets
 train_idx<-  createDataPartition(carrier_group$arr_delay,p=0.95,list=F)
 test<-carrier_group[-train_idx,]
@@ -127,7 +127,7 @@ valid<-carrier_group[val_idx,]
 train<-carrier_group[-val_idx,]
 ```
 4. Training ridge regressions models for different values of λ and evaluate the root mean squared error on the validation set. And then to find an optimal value for λ.
-```{r,include=TRUE,eval=TRUE,echo=TRUE}
+```{r,include=TRUE,eval=FALSE,echo=TRUE}
 rmse_vec<-c() # root mean squared errors 
 r2_vec<-c() # R squared
 mse_vec<-c() # mean squared errors
@@ -151,7 +151,7 @@ plot(lamda,rmse_vec)
 
 
 5. using λ value to predict the test set and reporting the RMSE of the predicted model.
-```{r,include=TRUE,eval=TRUE,echo=TRUE,results='hide'}
+```{r,include=TRUE,eval=FALSE,echo=TRUE,results='hide'}
 # we can see that rmse is very minimum that is around 0.0001
 
 #Predicting the values of test data by training the model
@@ -162,7 +162,7 @@ pred<-model$predict(test)
 
 RMSE value on predicting test data is shown below, prediction and RMSE value depends on selecting features and amount of data, but we can see the rmse values of test data is slightly higher than training data but lower than validation data this confirms our model is not overfitted
 
-```{r,include=TRUE,eval=TRUE,echo=TRUE}
+```{r,include=TRUE,eval=FALSE,echo=TRUE}
 rmse<- mmetric(test$arr_delay,pred,"RMSE")
 rmse
 
