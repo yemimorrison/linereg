@@ -114,13 +114,14 @@ carrier_group$tailnum<-as.factor(carrier_group$tailnum)
 carrier_group[,c('tailnum')]<-sapply(carrier_group[,c('tailnum')],unclass)
 
 ```
-3. Using the caret package to divide the fight dataset into three sets: test, train and validation.
+3. Using the caret package to divide the fight dataset into three sets: test, train and validation with proportions of 5%, 80% and 15%.
 ```{r,include=TRUE,eval=FALSE,echo=TRUE,results='hide'}
 #splitting the data into train, test and validation datasets
-train_idx<-caret::createDataPartition(carrier_group$arr_delay,p=0.95,list=F)
+train_idx<-caret::createDataPartition(carrier_group$arr_delay,p=0.80,list=F)
+
 test<-carrier_group[-train_idx,]
 
-val_idx<-caret::createDataPartition(carrier_group$arr_delay[train_idx],p=0.16,list=F)
+val_idx<-caret::createDataPartition(carrier_group$arr_delay[train_idx],p=0.75,list=F)
 valid<-carrier_group[val_idx,]
 train<-carrier_group[-val_idx,]
 ```
